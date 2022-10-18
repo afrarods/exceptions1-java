@@ -42,9 +42,17 @@ public class Reservation {
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);    // converte os milisegundos para dias
 	}
 	
-	public void updataDates(Date checkin, Date checkout) {
+	public String updataDates(Date checkin, Date checkout) {
+		Date now = new Date();
+		if (checkin.before(now) || checkout.before(now)) {
+			return "Reservation dates for update must be future dates";
+		}
+		if (checkout.before(checkin)) {
+			return "Check-out date must be after check-in date";
+		}
 		this.checkin = checkin;
 		this.checkout = checkout;
+		return null;  // se retornar um String null é pq não retornou nenhum dos Strings de erro e fez update a checkin e checkout
 	}
 	
 	@Override
